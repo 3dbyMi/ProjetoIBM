@@ -1,0 +1,56 @@
+# Definir o limite de vagas
+limite = 50
+
+# Criar uma lista vazia para armazenar os participantes
+participantes = []
+
+# Criar uma função para verificar se o usuário atende às condições
+def verificar_condicoes(nome, idade, residencia):
+  # Verificar se o usuário é maior de idade
+  if idade < 18:
+    return False, f"{nome}, você precisa ser maior de idade para se inscrever no evento."
+  # Verificar se o usuário reside em SP
+  if residencia.upper() != "S":
+    return False, f"{nome}, você precisa residir no estado de São Paulo para se inscrever no evento."
+  # Verificar se o usuário está ciente do horário do evento
+  horario = input(f"{nome}, o evento ocorre à noite. Você está de acordo com esse horário? (S/N) ")
+  if horario.upper() != "S":
+    return False, f"{nome}, você precisa estar de acordo com o horário do evento para se inscrever."
+  # Se todas as condições forem atendidas, retornar True e uma mensagem de sucesso
+  return True, f"{nome}, você atendeu a todas as condições de participação. Parabéns!"
+
+# Criar uma função para verificar se há vagas disponíveis
+def verificar_vagas():
+  # Verificar se o número de participantes é menor que o limite
+  if len(participantes) < limite:
+    return True
+  # Se não houver vagas, retornar False
+  return False
+
+# Criar um loop para receber as informações dos usuários
+while True:
+  # Pedir ao usuário que digite seu nome
+  nome = input("Digite seu nome: ")
+  # Pedir ao usuário que digite sua idade
+  idade = int(input("Digite sua idade: "))
+  # Pedir ao usuário que confirme se reside em SP
+  residencia = input("Você reside em São Paulo? (S/N) ")
+  # Verificar se o usuário atende às condições
+  condicoes, mensagem = verificar_condicoes(nome, idade, residencia)
+  # Se o usuário atender a todas as condições e ainda houver vagas disponíveis, adicionar o usuário à lista de participantes
+  if condicoes and verificar_vagas():
+    participantes.append(nome)
+    vagas_restantes = limite - len(participantes)
+    print(f"{mensagem} Você foi adicionado à lista de participantes. Restam {vagas_restantes} vagas.")
+  # Se o usuário não atender a uma ou mais condições, exibir uma mensagem de advertência
+  else:
+    if idade < 18:
+      print(f"{mensagem} Você não atendeu à condição de idade.")
+    elif residencia.upper() != "S":
+      print(f"{nome}, você precisa residir no estado de São Paulo para se inscrever no evento.")
+    else:
+      print(f"{nome}, você precisa estar de acordo com o horário do evento para se inscrever.")
+  # Verificar se o limite de vagas já foi atingido
+  if len(participantes) == limite:
+    print("O limite de vagas foi atingido. As inscrições estão encerradas.")
+    break
